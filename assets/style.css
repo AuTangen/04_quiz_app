@@ -44,6 +44,9 @@ header {
 }
 .quiz-wrapper button {
     margin: 8px;
+    padding: 1%;
+    background-color: lightsteelblue;
+    border-radius: 6px;
 }
 
 .answer {
@@ -58,10 +61,22 @@ header {
 
 }
 
+.quiz-end {
+    margin: 1%;
+    font-size: 1.5rem;
+}
+
+
+.hide {
+    display: none;
+}
+
 #right {
-    color:darkgreen
+    font-size: 150%;
+    color:darkgreen;
 }
 
 #wrong {
-    color:tomato
-}
+    font-size: 150%;
+    color:tomato;
+}   

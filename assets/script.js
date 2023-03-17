@@ -6,25 +6,69 @@ var quizWrapper = document.querySelector('.quiz-wrapper')
 var quizIndex = 0;
 var correctAns = 0
 var incorrectAns = 0;
+var right = document.getElementById('right');
+var wrong = document.getElementById('wrong');
+var countdown;
 
-console.log(startBtn);
-console.log(timer);
-console.log(h3);
 
 // start timer/timeout function
-var seconds = 60;
-startBtn.addEventListener("click", countdown);
 
-function countdown() {
-var countdown = setInterval(function () {
+var seconds = 60;
+startBtn.addEventListener("click", displayTime);
+
+function displayTime() {
+countdown = setInterval(function () {
     seconds--;
     timer.innerText = 'Timer: ' + seconds;
     if (seconds === 0) {
         clearInterval(countdown);
-        alert('Time is up!')
+        alert('Time is up!');
+        quizEnd(); 
+       
     }
     
-}, 1000);
+}, 1000); 
+    
+};
+
+function renderLastGrade() {
+    // Use JSON.parse() to convert text to JavaScript object
+    var lastGrade = JSON.parse(localStorage.getItem("yourScore"));
+    // Check if data is returned, if not exit out of the function
+    if (lastGrade !== null) {
+    document.getElementById("saved-name").innerHTML = lastGrade.Name;
+    document.getElementById("saved-grade").innerHTML = (lastGrade.Grade + " %");
+    
+    } else {
+      return;
+    }
+  }
+
+function quizEnd() {
+    clearInterval(countdown);
+    var score = (correctAns / quiz.length) * 100;
+    quizWrapper.innerHTML = 
+    `<h4 class="quiz-end">Your Score</h4>
+    <h3 class="quiz-end">${score + ' %'}</h3>
+    <h6 class="quiz-end">enter your name and log your high score!</h6>
+    <input type="text" class="quiz-end" id="input" placeholder="enter name">
+    <button id="score">Enter</button>`
+   
+    var enterScore = document.getElementById("score");
+    enterScore.addEventListener("click", function(event) {
+        event.preventDefault();
+        
+        var yourScore = {
+          Name: input.value.trim(),
+          Grade: score
+          };
+        
+        localStorage.setItem("yourScore", JSON.stringify(yourScore));
+        renderLastGrade();
+        
+        });
+    
+          
 };
 
 
@@ -45,13 +89,7 @@ var showQuestion = [
         ansB.addEventListener("click", incorrect)
         ansC.addEventListener("click", correct)
         ansD.addEventListener("click", incorrect)
-        
-        
-        console.log(ansA);
-        console.log(ansB);
-        console.log(ansC);
-        console.log(ansD);
-        },
+               },
 // question 2
         function() {
             quizWrapper.innerHTML = 
@@ -68,12 +106,6 @@ var showQuestion = [
             ansB.addEventListener("click", incorrect)
             ansC.addEventListener("click", incorrect)
             ansD.addEventListener("click", correct)
-            
-            
-            console.log(ansA);
-            console.log(ansB);
-            console.log(ansC);
-            console.log(ansD);
             },
 // question 3
             function() {
@@ -91,12 +123,6 @@ var showQuestion = [
                 ansB.addEventListener("click", incorrect)
                 ansC.addEventListener("click", incorrect)
                 ansD.addEventListener("click", incorrect)
-                
-                
-                console.log(ansA);
-                console.log(ansB);
-                console.log(ansC);
-                console.log(ansD);
                 },
 // question 4
                    function() {
@@ -114,12 +140,6 @@ var showQuestion = [
                 ansB.addEventListener("click", incorrect)
                 ansC.addEventListener("click", correct)
                 ansD.addEventListener("click", incorrect)
-                
-                
-                console.log(ansA);
-                console.log(ansB);
-                console.log(ansC);
-                console.log(ansD);
                 },
 // question 5
    function() {
@@ -137,36 +157,44 @@ var showQuestion = [
                 ansB.addEventListener("click", correct)
                 ansC.addEventListener("click", incorrect)
                 ansD.addEventListener("click", incorrect)
-                
-                
-                console.log(ansA);
-                console.log(ansB);
-                console.log(ansC);
-                console.log(ansD);
                 }
 ]
 
 
+
 // correct / incorrect scripts
 
-// ****** if quizIndex < 5 *******
-// else {run function for score and whatever}
+// ****** if quizIndex = quiz.length *******
+// else {run function for score and whatever quizEnd}
 function correct() {
-    alert("wow you so smart")
+    right.classList.remove('hide');
     correctAns++;
     quizIndex++;
-    showQuestion[quizIndex]();
-    console.log(correctAns);
+    setTimeout(() => {
+        right.classList.add('hide');
+        if (quizIndex === quiz.length) {
+            quizEnd()
+        }
+        showQuestion[quizIndex]();
+        
+      }, "1000");
+    
 };
 
 function incorrect() {
-    alert("wow you so dUmB")
+    wrong.classList.remove('hide');
     incorrectAns++;
     quizIndex++;
     seconds = seconds-5;
-    showQuestion[quizIndex]();
-    console.log(incorrectAns);
-};
+    setTimeout(() => {
+        wrong.classList.add('hide');
+        if (quizIndex === quiz.length) {
+            quizEnd()
+        }
+        showQuestion[quizIndex]();
+      
+      }, "1000");
+ };
 
 
 // begin quiz
@@ -174,6 +202,10 @@ startBtn.addEventListener("click", showQuestion[0]);
 
 
 
+function init() {
+    renderLastGrade();
+}
+init();
 
 // ---------------old code---------------------
 

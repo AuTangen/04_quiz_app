@@ -19,10 +19,19 @@
     <div class="quiz-wrapper">
         <h4>ARE YOU READY FOR A CODING QUIZ?</h4>
         <p>press the start button to begin. you have one minute to answer all the questions, an incorrect answer will
-            result in -5 seconds. you don't want to know what happens when the timer reaches zero!</p>
+            result in -5 seconds.</p>
         <button id="start">Start Quiz</button>
     </div>
-    <h2 class="answer"></h2>
+    <div class="answer">
+        <h5 class="hide" id="right">Right!</h5>
+        <h5 class ="hide" id="wrong">Wrong!    -5 seconds</h5>
+    </div>
+
+    <div class="scores">
+        <h2>Your Last Score</h2>
+        <h3>Name: <span id="saved-name"></span></h3>
+        <h3>Grade: <span id="saved-grade"></span></h3>
+    </div>
 
 
     <script src = "assets/data.js"></script>
